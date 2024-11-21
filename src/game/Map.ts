@@ -1,31 +1,25 @@
-import { Application, Container, Graphics } from 'pixi.js';
-
-const terrain: { [key: number]: number } = {
-  0: 0x7f7f7f,
-  '-1': 0x1e90ff,
-  2: 0x32cd32,
-};
+import { Application, Container, Sprite } from 'pixi.js';
+import { mapData } from '../types/mapData';
+import { tiles } from './Tileset';
 
 export const createMap = (
-  mapData: number[][],
+  mapData: mapData,
   tileSize: number,
   app: Application,
-) => {
+): Container => {
   const mapContainer = new Container();
   app.stage.addChild(mapContainer);
 
-  for (let row: number = 0; row < mapData.length; row++) {
-    for (let col: number = 0; col < mapData[row].length; col++) {
-      const tileType = mapData[row][col];
-      const tileContent = terrain[tileType] || 0x000000;
+  for (let i: number = 0; i < mapData.height; i++) {
+    for (let j: number = 0; j < mapData.width; j++) {
+      const tileId = mapData.layers[0].data[i * mapData.width + j] - 1;
 
-      const tile = new Graphics();
-      tile.fill(tileContent);
-      tile.rect(col * tileSize, row * tileSize, tileSize, tileSize);
-      tile.fill();
+      const tileSprite = new Sprite(tiles[tileId]);
+      tileSprite.x = (j - 1) * tileSize;
+      tileSprite.y = i * tileSize;
 
-      mapContainer.addChild(tile);
+      mapContainer.addChild(tileSprite);
     }
   }
-  return { mapContainer };
+  return mapContainer;
 };

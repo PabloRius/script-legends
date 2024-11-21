@@ -17,15 +17,14 @@ export const GameCanvas: React.FC = () => {
 
     const initApp = async () => {
       await app.init({
-        width: Math.min(tileSize * mapData[0].length, tileSize * 12),
-        height: Math.min(tileSize * mapData.length, tileSize * 10),
+        width: Math.min(tileSize * mapData.width, tileSize * 24),
+        height: Math.min(tileSize * mapData.height, tileSize * 15),
       });
 
       if (canvasRef.current) {
         canvasRef.current.appendChild(app.canvas);
       }
-
-      const { mapContainer } = createMap(mapData, tileSize, app);
+      const mapContainer = createMap(mapData, tileSize, app);
       const playerState = createPlayer(mapContainer, tileSize);
 
       const keys: Record<string, boolean> = {};
@@ -35,7 +34,13 @@ export const GameCanvas: React.FC = () => {
 
       app.ticker.add(() => {
         movePlayer(playerState, keys, mapData);
-        updateCamera(mapContainer, playerState.player, app);
+        updateCamera(
+          mapContainer,
+          playerState.player,
+          app,
+          mapData.width,
+          mapData.height,
+        );
       });
 
       return () => {

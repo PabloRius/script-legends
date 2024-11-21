@@ -1,5 +1,6 @@
 import { Container, Graphics } from 'pixi.js';
 import { playerState } from '../types/playerState';
+import { mapData } from '../types/mapData';
 
 export const createPlayer = (
   mapContainer: Container,
@@ -27,17 +28,16 @@ export const createPlayer = (
 
 export const movePlayer = (
   playerState: playerState,
-
   keys: Record<string, boolean>,
-  mapData: number[][],
+  mapData: mapData,
 ) => {
   const { player, isMoving, targetPosition, playerSize, playerSpeed } =
     playerState;
 
   if (isMoving) {
-    console.log(
-      `Moving from [${player.x}, ${player.y}] to [${targetPosition.x}, ${targetPosition.y}]`,
-    );
+    // console.log(
+    //   `Moving from [${player.x}, ${player.y}] to [${targetPosition.x}, ${targetPosition.y}]`,
+    // );
     const dx = targetPosition.x - player.x;
     const dy = targetPosition.y - player.y;
 
@@ -55,38 +55,22 @@ export const movePlayer = (
   const playerCol = Math.floor(player.x / playerSize);
   const playerRow = Math.floor(player.y / playerSize);
 
-  if (
-    keys['ArrowUp'] &&
-    playerRow > 0 &&
-    mapData[playerRow - 1][playerCol] >= 0
-  ) {
+  if (keys['ArrowUp'] && playerRow > 0) {
     playerState.targetPosition.y -= playerSize;
     playerState.isMoving = true;
     return;
   }
-  if (
-    keys['ArrowDown'] &&
-    playerRow < mapData.length - 1 &&
-    mapData[playerRow + 1][playerCol] >= 0
-  ) {
+  if (keys['ArrowDown'] && playerRow < mapData.height - 1) {
     playerState.targetPosition.y += playerSize;
     playerState.isMoving = true;
     return;
   }
-  if (
-    keys['ArrowLeft'] &&
-    playerCol > 0 &&
-    mapData[playerRow][playerCol - 1] >= 0
-  ) {
+  if (keys['ArrowLeft'] && playerCol > 0) {
     playerState.targetPosition.x -= playerSize;
     playerState.isMoving = true;
     return;
   }
-  if (
-    keys['ArrowRight'] &&
-    playerCol < mapData[0].length - 1 &&
-    mapData[playerRow][playerCol + 1] >= 0
-  ) {
+  if (keys['ArrowRight'] && playerCol < mapData.width - 1) {
     playerState.targetPosition.x += playerSize;
     playerState.isMoving = true;
     return;
