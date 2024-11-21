@@ -58,33 +58,37 @@ export const movePlayer = (
   if (
     keys['ArrowUp'] &&
     playerRow > 0 &&
-    mapData[playerRow - 1][playerCol] !== 1
+    mapData[playerRow - 1][playerCol] >= 0
   ) {
     playerState.targetPosition.y -= playerSize;
     playerState.isMoving = true;
+    return;
   }
   if (
     keys['ArrowDown'] &&
     playerRow < mapData.length - 1 &&
-    mapData[playerRow + 1][playerCol] !== 1
+    mapData[playerRow + 1][playerCol] >= 0
   ) {
     playerState.targetPosition.y += playerSize;
     playerState.isMoving = true;
+    return;
   }
   if (
     keys['ArrowLeft'] &&
     playerCol > 0 &&
-    mapData[playerRow][playerCol - 1] !== 1
+    mapData[playerRow][playerCol - 1] >= 0
   ) {
     playerState.targetPosition.x -= playerSize;
     playerState.isMoving = true;
+    return;
   }
   if (
     keys['ArrowRight'] &&
     playerCol < mapData[0].length - 1 &&
-    mapData[playerRow][playerCol + 1] !== 1
+    mapData[playerRow][playerCol + 1] >= 0
   ) {
     playerState.targetPosition.x += playerSize;
     playerState.isMoving = true;
+    return;
   }
 };

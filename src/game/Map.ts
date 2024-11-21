@@ -2,7 +2,7 @@ import { Application, Container, Graphics } from 'pixi.js';
 
 const terrain: { [key: number]: number } = {
   0: 0x7f7f7f,
-  1: 0x1e90ff,
+  '-1': 0x1e90ff,
   2: 0x32cd32,
 };
 
