@@ -13,8 +13,8 @@ export const createPlayer = (
   player.fill(0xff0000);
   player.rect(0, 0, playerSize, playerSize);
   player.fill();
-  player.x = 3 * tileSize;
-  player.y = 2 * tileSize;
+  player.x = 10 * tileSize;
+  player.y = 10 * tileSize;
   mapContainer.addChild(player);
 
   return {

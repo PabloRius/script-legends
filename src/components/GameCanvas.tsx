@@ -17,7 +17,7 @@ export const GameCanvas: React.FC = () => {
 
     const initApp = async () => {
       await app.init({
-        width: Math.min(tileSize * mapData.width, tileSize * 24),
+        width: Math.min(tileSize * mapData.width, tileSize * 25),
         height: Math.min(tileSize * mapData.height, tileSize * 15),
       });
 

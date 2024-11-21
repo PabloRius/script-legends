@@ -7,15 +7,15 @@ export const updateCamera = (
   mapWidth: number,
   mapHeight: number,
 ) => {
-  mapContainer.x = -player.x + app.screen.width / 2 - player.width / 2;
-  mapContainer.y = -player.y + app.screen.height / 2 - player.height / 2;
+  const cameraX = -player.x + app.screen.width / 2 - player.width / 2;
+  const cameraY = -player.y + app.screen.height / 2 - player.height / 2;
 
-  mapContainer.x = Math.min(
-    0,
-    Math.max(mapContainer.x, -mapWidth + app.screen.width),
-  );
+  mapContainer.x = Math.min(0, Math.max(cameraX, -mapWidth + app.screen.width));
   mapContainer.y = Math.min(
     0,
-    Math.max(mapContainer.y, -mapHeight + app.screen.height),
+    Math.max(cameraY, -mapHeight + app.screen.height),
   );
+  mapContainer.x = Math.min(-player.x + (app.screen.width - 32) / 2, 0);
+  // console.log(mapContainer.x);
+  mapContainer.y = Math.min(-player.y + (app.screen.height - 32) / 2, 0);
 };

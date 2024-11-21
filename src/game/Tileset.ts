@@ -23,7 +23,6 @@ function generate_tiles_data(
       });
     }
   }
-  console.log(tiles);
   return tiles;
 }
 export const tiles = generate_tiles_data(tileset, 64, 98);
