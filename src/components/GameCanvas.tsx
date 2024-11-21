@@ -38,8 +38,8 @@ export const GameCanvas: React.FC = () => {
           mapContainer,
           playerState.player,
           app,
-          mapData.width,
-          mapData.height,
+          mapData.width * tileSize,
+          mapData.height * tileSize,
         );
       });
 
