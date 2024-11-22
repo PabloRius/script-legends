@@ -1,12 +1,14 @@
 import { Application, Container, Sprite } from 'pixi.js';
 import { mapData } from '../types/mapData';
-import { tiles } from './Tileset';
+import { generate_tiles_data, loadTileset } from './Tileset';
 
-export const createMap = (
+export const createMap = async (
   mapData: mapData,
   tileSize: number,
   app: Application,
-): Container => {
+): Promise<Container> => {
+  const tileset = await loadTileset('/tilesets/tileset.png');
+  const tiles = generate_tiles_data(tileset, 64, 98);
   const mapContainer = new Container();
   app.stage.addChild(mapContainer);
 

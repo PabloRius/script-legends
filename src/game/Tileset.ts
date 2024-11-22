@@ -6,9 +6,8 @@ export const loadTileset = async (tilesetImage: string): Promise<Texture> => {
 
   return texture;
 };
-const tileset = await loadTileset('/tilesets/tileset.png');
 
-function generate_tiles_data(
+export function generate_tiles_data(
   tileset: Texture,
   tilesetWidth: number,
   tilesetHeight: number,
@@ -25,4 +24,3 @@ function generate_tiles_data(
   }
   return tiles;
 }
-export const tiles = generate_tiles_data(tileset, 64, 98);

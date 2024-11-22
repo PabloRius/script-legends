@@ -24,7 +24,7 @@ export const GameCanvas: React.FC = () => {
       if (canvasRef.current) {
         canvasRef.current.appendChild(app.canvas);
       }
-      const mapContainer = createMap(mapData, tileSize, app);
+      const mapContainer = await createMap(mapData, tileSize, app);
       const playerState = createPlayer(mapContainer, tileSize);
 
       const keys: Record<string, boolean> = {};
