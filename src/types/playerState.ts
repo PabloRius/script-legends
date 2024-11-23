@@ -8,4 +8,7 @@ export interface playerState {
   playerWidth: number;
   playerHeight: number;
   playerSpeed: number;
+  currentFrame: number;
+  animationTimer: number;
+  animationSpeed: number;
 }

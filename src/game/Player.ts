@@ -26,6 +26,9 @@ export const createPlayer = (
     playerSpeed: 1,
     isMoving: false,
     targetPosition: { x: player.x, y: player.y },
+    currentFrame: 0,
+    animationTimer: 0,
+    animationSpeed: 100,
   };
 };
 
@@ -34,6 +37,7 @@ export const movePlayer = (
   keys: Record<string, boolean>,
   mapData: mapData,
   tileSize: number,
+  spriteSet: spriteSet,
 ) => {
   const { player, isMoving, targetPosition, playerSpeed } = playerState;
   const obstacles = mapData.layers[2].data;
@@ -59,6 +63,7 @@ export const movePlayer = (
     }
 
     if (player.x === targetPosition.x && player.y === targetPosition.y) {
+      idlePlayer(playerState, spriteSet);
       playerState.isMoving = false;
     }
     return;
@@ -108,9 +113,28 @@ export const movePlayer = (
   }
 };
 
+export const idlePlayer = (playerState: playerState, spriteSet: spriteSet) => {
+  console.log('Idling');
+
+  const direction = playerState.direction;
+  const idleFrame = spriteSet[direction][0];
+  playerState.player.texture = idleFrame;
+};
+
 export const animatePlayer = (
   playerState: playerState,
   spriteSet: spriteSet,
+  deltaTime: number,
 ) => {
-  playerState.player.texture = spriteSet[playerState.direction][0];
+  const direction = playerState.direction;
+  const frames = spriteSet[direction];
+  playerState.animationTimer += deltaTime;
+
+  if (playerState.animationTimer >= playerState.animationSpeed) {
+    playerState.animationTimer = 0;
+
+    playerState.currentFrame = (playerState.currentFrame + 1) % frames.length;
+
+    playerState.player.texture = frames[playerState.currentFrame];
+  }
 };

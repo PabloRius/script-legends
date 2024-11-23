@@ -48,9 +48,15 @@ export const GameCanvas: React.FC = () => {
       window.addEventListener('keydown', (e) => (keys[e.key] = true));
       window.addEventListener('keyup', (e) => (keys[e.key] = false));
 
-      app.ticker.add(() => {
-        movePlayer(playerState, keys, mapData, tileSize);
-        animatePlayer(playerState, sprites.Red);
+      app.ticker.add((delta) => {
+        movePlayer(playerState, keys, mapData, tileSize, sprites.Red);
+        if (playerState.isMoving) {
+          animatePlayer(
+            playerState,
+            sprites.Red,
+            delta.deltaTime * (1000 / 60),
+          );
+        }
         updateCamera(
           mapContainer,
           playerState.player,
