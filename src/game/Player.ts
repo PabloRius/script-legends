@@ -1,14 +1,15 @@
-import { Container, Sprite } from 'pixi.js';
+import { Container, Sprite, Texture } from 'pixi.js';
 import { playerState } from '../types/playerState';
 import { mapData } from '../types/mapData';
 import { spriteSet } from '../types/spriteSet';
+import { changeMap } from './Map';
 
 export const createPlayer = (
   mapContainer: Container,
   spriteSet: spriteSet,
   tileSize: number,
 ): playerState => {
-  const idleDown = spriteSet.down[1];
+  const idleDown = spriteSet.down[0];
 
   const player = new Sprite(idleDown);
   player.width = spriteSet.width;
@@ -38,6 +39,9 @@ export const movePlayer = (
   mapData: mapData,
   tileSize: number,
   spriteSet: spriteSet,
+  tileset: { [key: string]: { [key: number]: Texture } },
+  floorContainer: Container,
+  roofContainer: Container,
 ) => {
   const { player, isMoving, targetPosition, playerSpeed } = playerState;
   const obstacles = mapData.layers[2].data;
@@ -65,6 +69,23 @@ export const movePlayer = (
     if (player.x === targetPosition.x && player.y === targetPosition.y) {
       idlePlayer(playerState, spriteSet);
       playerState.isMoving = false;
+      const transition = mapData.mapTransitions.find(
+        (t) =>
+          t.entryX === player.x / tileSize &&
+          t.entryY === player.y / tileSize + 1,
+      );
+      if (transition) {
+        changeMap(
+          floorContainer,
+          roofContainer,
+          transition,
+          playerState,
+          spriteSet,
+          tileset,
+          tileSize,
+          transition.direction,
+        );
+      }
     }
     return;
   }

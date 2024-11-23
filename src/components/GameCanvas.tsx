@@ -49,7 +49,16 @@ export const GameCanvas: React.FC = () => {
       window.addEventListener('keyup', (e) => (keys[e.key] = false));
 
       app.ticker.add((delta) => {
-        movePlayer(playerState, keys, mapData, tileSize, sprites.Red);
+        movePlayer(
+          playerState,
+          keys,
+          mapData,
+          tileSize,
+          sprites.Red,
+          tilesets,
+          groundLayer,
+          roofLayer,
+        );
         if (playerState.isMoving) {
           animatePlayer(
             playerState,

@@ -1,6 +1,16 @@
 import { mapData } from '../../../types/mapData';
 
 export const Pallet_town_map: mapData = {
+  mapTransitions: [
+    {
+      entryX: 6,
+      entryY: 7,
+      destinationMap: 'PalletTown',
+      destX: 15,
+      destY: 7,
+      direction: 'down',
+    },
+  ],
   tilesetName: 'Outdoors',
   height: 20,
   layers: [

@@ -1,5 +1,10 @@
 import { Container, Sprite, Texture } from 'pixi.js';
 import { mapData } from '../types/mapData';
+import { mapTransition } from '../types/mapTransition';
+import { maps } from './Maps/Maps';
+import { playerState } from '../types/playerState';
+import { rotatePlayer } from './Player';
+import { spriteSet } from '../types/spriteSet';
 
 export const drawGround = (
   mapData: mapData,
@@ -64,6 +69,32 @@ export const drawRoofs = (
   }
 };
 
-export const resetMap = (mapContainer: Container) => {
+const resetMap = (mapContainer: Container) => {
   mapContainer.removeChildren();
+};
+
+export const changeMap = (
+  floorContainer: Container,
+  roofContainer: Container,
+  transition: mapTransition,
+  playerState: playerState,
+  spriteSet: spriteSet,
+  tileset: { [key: string]: { [key: number]: Texture } },
+  tileSize: number,
+  direction: 'up' | 'down' | 'left' | 'right',
+) => {
+  const newMapData = maps[transition.destinationMap];
+  resetMap(floorContainer);
+  resetMap(roofContainer);
+
+  drawGround(newMapData, floorContainer, tileset, tileSize);
+  drawRoofs(newMapData, roofContainer, tileset, tileSize);
+
+  playerState.player.x = transition.destX * tileSize;
+  playerState.player.y = (transition.destY - 1) * tileSize;
+  playerState.targetPosition = {
+    x: playerState.player.x,
+    y: playerState.player.y,
+  };
+  rotatePlayer(playerState, spriteSet, direction);
 };
