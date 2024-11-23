@@ -80,7 +80,7 @@ export const movePlayer = (
   };
 
   if (keys['ArrowUp']) {
-    playerState.direction = 'up';
+    rotatePlayer(playerState, spriteSet, 'up');
     if (playerRow > 0 && surroundings.up === 0) {
       playerState.targetPosition.y -= tileSize;
       playerState.isMoving = true;
@@ -88,7 +88,7 @@ export const movePlayer = (
     return;
   }
   if (keys['ArrowDown']) {
-    playerState.direction = 'down';
+    rotatePlayer(playerState, spriteSet, 'down');
     if (playerRow < mapData.height - 1 && surroundings.down === 0) {
       playerState.targetPosition.y += tileSize;
       playerState.isMoving = true;
@@ -96,7 +96,7 @@ export const movePlayer = (
     return;
   }
   if (keys['ArrowLeft']) {
-    playerState.direction = 'left';
+    rotatePlayer(playerState, spriteSet, 'left');
     if (playerCol > 0 && surroundings.left === 0) {
       playerState.targetPosition.x -= tileSize;
       playerState.isMoving = true;
@@ -104,7 +104,7 @@ export const movePlayer = (
     return;
   }
   if (keys['ArrowRight']) {
-    playerState.direction = 'right';
+    rotatePlayer(playerState, spriteSet, 'right');
     if (playerCol < mapData.width - 1 && surroundings.right === 0) {
       playerState.targetPosition.x += tileSize;
       playerState.isMoving = true;
@@ -114,10 +114,18 @@ export const movePlayer = (
 };
 
 export const idlePlayer = (playerState: playerState, spriteSet: spriteSet) => {
-  console.log('Idling');
-
   const direction = playerState.direction;
   const idleFrame = spriteSet[direction][0];
+  playerState.player.texture = idleFrame;
+};
+
+export const rotatePlayer = (
+  playerState: playerState,
+  spriteSet: spriteSet,
+  direction: 'up' | 'down' | 'left' | 'right',
+) => {
+  const idleFrame = spriteSet[direction][0];
+  playerState.direction = direction;
   playerState.player.texture = idleFrame;
 };
 
