@@ -33,6 +33,7 @@ export const movePlayer = (
 ) => {
   const { player, isMoving, targetPosition, playerSize, playerSpeed } =
     playerState;
+  const obstacles = mapData.layers[2].data;
 
   if (isMoving) {
     // console.log(
@@ -54,23 +55,38 @@ export const movePlayer = (
 
   const playerCol = Math.floor(player.x / playerSize);
   const playerRow = Math.floor(player.y / playerSize);
+  const UniDCoord = (player.y / 32) * mapData.width + player.x / 32;
+  const surroundings = {
+    up: obstacles[UniDCoord - mapData.width],
+    down: obstacles[UniDCoord + mapData.width],
+    left: obstacles[UniDCoord - 1],
+    right: obstacles[UniDCoord + 1],
+  };
 
-  if (keys['ArrowUp'] && playerRow > 0) {
+  if (keys['ArrowUp'] && playerRow > 0 && surroundings.up === 0) {
     playerState.targetPosition.y -= playerSize;
     playerState.isMoving = true;
     return;
   }
-  if (keys['ArrowDown'] && playerRow < mapData.height - 1) {
+  if (
+    keys['ArrowDown'] &&
+    playerRow < mapData.height - 1 &&
+    surroundings.down === 0
+  ) {
     playerState.targetPosition.y += playerSize;
     playerState.isMoving = true;
     return;
   }
-  if (keys['ArrowLeft'] && playerCol > 0) {
+  if (keys['ArrowLeft'] && playerCol > 0 && surroundings.left === 0) {
     playerState.targetPosition.x -= playerSize;
     playerState.isMoving = true;
     return;
   }
-  if (keys['ArrowRight'] && playerCol < mapData.width - 1) {
+  if (
+    keys['ArrowRight'] &&
+    playerCol < mapData.width - 1 &&
+    surroundings.right === 0
+  ) {
     playerState.targetPosition.x += playerSize;
     playerState.isMoving = true;
     return;

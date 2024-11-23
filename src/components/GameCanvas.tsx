@@ -1,11 +1,13 @@
 import React, { useEffect, useRef } from 'react';
-import { Application } from 'pixi.js';
-import { createMap } from '../game/Map';
+import { Application, Container } from 'pixi.js';
+import { drawGround, drawRoofs } from '../game/Map';
 import { createPlayer, movePlayer } from '../game/Player';
 import { updateCamera } from '../game/Camera';
-import { defaultMap } from '../game/Maps/default';
+import { Pallet_town_map_2 } from '../game/Maps/Pallet_Town_2';
+import { initTilesets } from '../game/Tileset';
+// import { defaultMap } from '../game/Maps/default';
 
-const mapData = defaultMap;
+const mapData = Pallet_town_map_2;
 
 const tileSize = 32;
 
@@ -24,8 +26,21 @@ export const GameCanvas: React.FC = () => {
       if (canvasRef.current) {
         canvasRef.current.appendChild(app.canvas);
       }
-      const mapContainer = await createMap(mapData, tileSize, app);
-      const playerState = createPlayer(mapContainer, tileSize);
+      const tilesets = await initTilesets();
+
+      const mapContainer = new Container();
+      app.stage.addChild(mapContainer);
+
+      const groundLayer = new Container();
+      const roofLayer = new Container();
+      const playerLayer = new Container();
+
+      mapContainer.addChild(groundLayer, playerLayer, roofLayer);
+
+      drawGround(mapData, groundLayer, tilesets, tileSize);
+      drawRoofs(mapData, roofLayer, tilesets, tileSize);
+
+      const playerState = createPlayer(playerLayer, tileSize);
 
       const keys: Record<string, boolean> = {};
 

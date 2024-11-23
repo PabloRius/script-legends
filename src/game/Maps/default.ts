@@ -1,6 +1,7 @@
 import { mapData } from '../../types/mapData';
 
 export const defaultMap: mapData = {
+  tilesetName: 'beta',
   height: 30,
   layers: [
     {
