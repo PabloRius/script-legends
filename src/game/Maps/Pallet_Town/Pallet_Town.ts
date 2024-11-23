@@ -1,6 +1,6 @@
-import { mapData } from '../../types/mapData';
+import { mapData } from '../../../types/mapData';
 
-export const Pallet_town_map_2: mapData = {
+export const Pallet_town_map: mapData = {
   tilesetName: 'Outdoors',
   height: 20,
   layers: [

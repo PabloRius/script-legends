@@ -1,13 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import { Application, Container } from 'pixi.js';
 import { drawGround, drawRoofs } from '../game/Map';
-import { createPlayer, movePlayer } from '../game/Player';
+import { animatePlayer, createPlayer, movePlayer } from '../game/Player';
 import { updateCamera } from '../game/Camera';
-import { Pallet_town_map_2 } from '../game/Maps/Pallet_Town_2';
+import { Pallet_town_map } from '../game/Maps/Pallet_Town/Pallet_Town';
 import { initTilesets } from '../game/Tileset';
-// import { defaultMap } from '../game/Maps/default';
+import { initSprites } from '../game/Sprite';
 
-const mapData = Pallet_town_map_2;
+const mapData = Pallet_town_map;
 
 const tileSize = 32;
 
@@ -27,6 +27,7 @@ export const GameCanvas: React.FC = () => {
         canvasRef.current.appendChild(app.canvas);
       }
       const tilesets = await initTilesets();
+      const sprites = await initSprites();
 
       const mapContainer = new Container();
       app.stage.addChild(mapContainer);
@@ -40,7 +41,7 @@ export const GameCanvas: React.FC = () => {
       drawGround(mapData, groundLayer, tilesets, tileSize);
       drawRoofs(mapData, roofLayer, tilesets, tileSize);
 
-      const playerState = createPlayer(playerLayer, tileSize);
+      const playerState = createPlayer(playerLayer, sprites.Red, tileSize);
 
       const keys: Record<string, boolean> = {};
 
@@ -48,7 +49,8 @@ export const GameCanvas: React.FC = () => {
       window.addEventListener('keyup', (e) => (keys[e.key] = false));
 
       app.ticker.add(() => {
-        movePlayer(playerState, keys, mapData);
+        movePlayer(playerState, keys, mapData, tileSize);
+        animatePlayer(playerState, sprites.Red);
         updateCamera(
           mapContainer,
           playerState.player,

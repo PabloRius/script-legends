@@ -1,8 +1,8 @@
-import { Application, Container, Graphics } from 'pixi.js';
+import { Application, Container, Sprite } from 'pixi.js';
 
 export const updateCamera = (
   mapContainer: Container,
-  player: Graphics,
+  player: Sprite,
   app: Application,
   mapWidth: number,
   mapHeight: number,

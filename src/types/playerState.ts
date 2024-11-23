@@ -1,9 +1,11 @@
-import { Graphics } from 'pixi.js';
+import { Sprite } from 'pixi.js';
 
 export interface playerState {
-  player: Graphics;
+  player: Sprite;
   isMoving: boolean;
+  direction: 'up' | 'down' | 'left' | 'right';
   targetPosition: { x: number; y: number };
-  playerSize: number;
+  playerWidth: number;
+  playerHeight: number;
   playerSpeed: number;
 }
