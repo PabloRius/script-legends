@@ -1,10 +1,31 @@
-import { Container, Sprite, Texture } from 'pixi.js';
+import { Application, Container, Sprite, Texture } from 'pixi.js';
 import { mapData } from '../types/mapData';
 import { mapTransition } from '../types/mapTransition';
 import { maps } from './Maps/Maps';
 import { playerState } from '../types/playerState';
 import { rotatePlayer } from './Player';
 import { spriteSet } from '../types/spriteSet';
+
+export const drawMap = (
+  app: Application,
+  playerLayer: Container,
+  mapData: mapData,
+  tilesets: Record<string, { [key: number]: Texture }>,
+  tileSize: number,
+) => {
+  const mapContainer = new Container();
+  app.stage.addChild(mapContainer);
+
+  const groundLayer = new Container();
+  const roofLayer = new Container();
+
+  mapContainer.addChild(groundLayer, playerLayer, roofLayer);
+
+  drawGround(mapData, groundLayer, tilesets, tileSize);
+  drawRoofs(mapData, roofLayer, tilesets, tileSize);
+
+  return mapContainer;
+};
 
 export const drawGround = (
   mapData: mapData,
@@ -74,21 +95,19 @@ const resetMap = (mapContainer: Container) => {
 };
 
 export const changeMap = (
-  floorContainer: Container,
-  roofContainer: Container,
+  app: Application,
   transition: mapTransition,
+  playerLayer: Container,
   playerState: playerState,
   spriteSet: spriteSet,
   tileset: { [key: string]: { [key: number]: Texture } },
   tileSize: number,
   direction: 'up' | 'down' | 'left' | 'right',
-) => {
+): mapData => {
   const newMapData = maps[transition.destinationMap];
-  resetMap(floorContainer);
-  resetMap(roofContainer);
+  resetMap(app.stage);
 
-  drawGround(newMapData, floorContainer, tileset, tileSize);
-  drawRoofs(newMapData, roofContainer, tileset, tileSize);
+  drawMap(app, playerLayer, newMapData, tileset, tileSize);
 
   playerState.player.x = transition.destX * tileSize;
   playerState.player.y = (transition.destY - 1) * tileSize;
@@ -97,4 +116,5 @@ export const changeMap = (
     y: playerState.player.y,
   };
   rotatePlayer(playerState, spriteSet, direction);
+  return newMapData;
 };

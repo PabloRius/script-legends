@@ -1,4 +1,4 @@
-import { Container, Sprite, Texture } from 'pixi.js';
+import { Application, Container, Sprite, Texture } from 'pixi.js';
 import { playerState } from '../types/playerState';
 import { mapData } from '../types/mapData';
 import { spriteSet } from '../types/spriteSet';
@@ -34,15 +34,15 @@ export const createPlayer = (
 };
 
 export const movePlayer = (
+  app: Application,
+  playerLayer: Container,
   playerState: playerState,
   keys: Record<string, boolean>,
   mapData: mapData,
   tileSize: number,
   spriteSet: spriteSet,
   tileset: { [key: string]: { [key: number]: Texture } },
-  floorContainer: Container,
-  roofContainer: Container,
-) => {
+): mapData | undefined => {
   const { player, isMoving, targetPosition, playerSpeed } = playerState;
   const obstacles = mapData.layers[2].data;
 
@@ -75,10 +75,10 @@ export const movePlayer = (
           t.entryY === player.y / tileSize + 1,
       );
       if (transition) {
-        changeMap(
-          floorContainer,
-          roofContainer,
+        return changeMap(
+          app,
           transition,
+          playerLayer,
           playerState,
           spriteSet,
           tileset,

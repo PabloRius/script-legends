@@ -1,13 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import { Application, Container } from 'pixi.js';
-import { drawGround, drawRoofs } from '../game/Map';
+import { drawMap } from '../game/Map';
 import { animatePlayer, createPlayer, movePlayer } from '../game/Player';
 import { updateCamera } from '../game/Camera';
 import { Pallet_town_map } from '../game/Maps/Pallet_Town/Pallet_Town';
 import { initTilesets } from '../game/Tileset';
 import { initSprites } from '../game/Sprite';
 
-const mapData = Pallet_town_map;
+let mapData = Pallet_town_map;
 
 const tileSize = 32;
 
@@ -29,19 +29,16 @@ export const GameCanvas: React.FC = () => {
       const tilesets = await initTilesets();
       const sprites = await initSprites();
 
-      const mapContainer = new Container();
-      app.stage.addChild(mapContainer);
-
-      const groundLayer = new Container();
-      const roofLayer = new Container();
       const playerLayer = new Container();
-
-      mapContainer.addChild(groundLayer, playerLayer, roofLayer);
-
-      drawGround(mapData, groundLayer, tilesets, tileSize);
-      drawRoofs(mapData, roofLayer, tilesets, tileSize);
-
       const playerState = createPlayer(playerLayer, sprites.Red, tileSize);
+
+      const mapContainer = drawMap(
+        app,
+        playerLayer,
+        mapData,
+        tilesets,
+        tileSize,
+      );
 
       const keys: Record<string, boolean> = {};
 
@@ -49,16 +46,17 @@ export const GameCanvas: React.FC = () => {
       window.addEventListener('keyup', (e) => (keys[e.key] = false));
 
       app.ticker.add((delta) => {
-        movePlayer(
+        const VMap = movePlayer(
+          app,
+          playerLayer,
           playerState,
           keys,
           mapData,
           tileSize,
           sprites.Red,
           tilesets,
-          groundLayer,
-          roofLayer,
         );
+        if (VMap) mapData = VMap;
         if (playerState.isMoving) {
           animatePlayer(
             playerState,

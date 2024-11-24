@@ -27,12 +27,12 @@ export function generate_tiles_data(
 
 export const initTilesets = async () => {
   const outdoor_tileset = await loadTileset('/tilesets/Outdoors.png');
-  const outdoor_tiles = generate_tiles_data(outdoor_tileset, 64, 599);
-  const beta_tileset = await loadTileset('tilesets/tileset.png');
-  const beta_tiles = generate_tiles_data(beta_tileset, 64, 100);
+  const outdoor_tiles = generate_tiles_data(outdoor_tileset, 64, 100);
+  const indoor_tileset = await loadTileset('/tilesets/Indoors.png');
+  const indoor_tiles = generate_tiles_data(indoor_tileset, 64, 100);
 
   return {
     Outdoors: outdoor_tiles,
-    beta: beta_tiles,
+    Indoors: indoor_tiles,
   };
 };
