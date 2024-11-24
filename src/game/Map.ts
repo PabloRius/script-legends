@@ -16,6 +16,13 @@ export const drawMap = (
   const mapContainer = new Container();
   app.stage.addChild(mapContainer);
 
+  const mapWidthInPixels = mapData.width * tileSize;
+  const mapHeightInPixels = mapData.height * tileSize;
+  const offsetX = (app.renderer.width - mapWidthInPixels) / 2;
+  const offsetY = (app.renderer.height - mapHeightInPixels) / 2;
+  mapContainer.x = Math.max(0, offsetX);
+  mapContainer.y = Math.max(0, offsetY);
+
   const groundLayer = new Container();
   const roofLayer = new Container();
 
