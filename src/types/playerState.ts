@@ -2,6 +2,7 @@ import { Sprite } from 'pixi.js';
 
 export interface playerState {
   player: Sprite;
+  canMove: boolean;
   isMoving: boolean;
   direction: 'up' | 'down' | 'left' | 'right';
   targetPosition: { x: number; y: number };

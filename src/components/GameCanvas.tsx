@@ -6,6 +6,7 @@ import { updateCamera } from '../game/Camera';
 import { Pallet_town_map } from '../game/Maps/Pallet_Town/Pallet_Town';
 import { initTilesets } from '../game/Tileset';
 import { initSprites } from '../game/Sprite';
+import { setupMenu } from '../game/Menu';
 
 let mapData = Pallet_town_map;
 
@@ -39,6 +40,9 @@ export const GameCanvas: React.FC = () => {
         tilesets,
         tileSize,
       );
+
+      const menuContainer = await setupMenu(app, playerState);
+      app.stage.addChild(menuContainer);
 
       const keys: Record<string, boolean> = {};
 

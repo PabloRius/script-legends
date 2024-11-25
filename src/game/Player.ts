@@ -25,6 +25,7 @@ export const createPlayer = (
     playerHeight: spriteSet.height,
     direction: 'down',
     playerSpeed: 1,
+    canMove: true,
     isMoving: false,
     targetPosition: { x: player.x, y: player.y },
     currentFrame: 0,
@@ -89,7 +90,7 @@ export const movePlayer = (
     }
     return;
   }
-
+  if (!playerState.canMove) return;
   const playerCol = Math.floor(player.x / tileSize);
   const playerRow = Math.floor(player.y / tileSize);
   const UniDCoord = (player.y / 32 + 1) * mapData.width + player.x / 32;
